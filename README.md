@@ -14,7 +14,8 @@
 ## מבנה
 - `docs/` – האתר (GitHub Pages). `docs/config.json` מכיל את כתובת ה-API.
 - `server/` – FastAPI: ה-API ואותו ממשק.
-- `scripts/serve.sh` – מריץ את השרת על 127.0.0.1 ומנהרת Cloudflare, ומעדכן את `config.json` כשכתובת המנהרה משתנה.
+- `Dockerfile` + `scripts/deploy_hf.sh` – העלאת השרת ל-Hugging Face Space (כתובת קבועה), והפניית האתר אליו.
+- `scripts/serve.sh` – הרצת השרת על 127.0.0.1 מאחורי מנהרת Cloudflare (דורש יציאה בפורט 7844), עם עדכון `config.json` אוטומטי.
 
 ## פרטיות ואבטחה
 - מפתח Gemini נקרא בזמן ריצה בשרת בלבד (`GEMINI_API_KEY` או `~/.secrets/gemini.env`). הוא לא נמצא במאגר ולא נשלח לדפדפן.

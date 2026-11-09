@@ -271,7 +271,8 @@
     } catch {}
     window.addEventListener("hashchange", route);
     route();
-    try { const h = await (await api("/api/health")).json(); if (!h.ready) offline(true, "השרת פועל, אבל שירות התמלול עוד לא הוגדר."); } catch {}
+    try { const h = await (await api("/api/health")).json(); if (!h.ready) offline(true, "השרת פועל, אבל שירות התמלול עוד לא הוגדר."); }
+    catch { offline(true, "שרת התמלול עדיין לא מחובר לאתר הזה, ולכן אי אפשר להתחיל תמלול כרגע. אפשר להכיר את האתר, ונעדכן כשהשרת יעלה."); }
   }
   init();
 })();

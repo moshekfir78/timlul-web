@@ -33,7 +33,10 @@ LIMITS = {"job": (6, 3600), "upload": (400, 3600), "write": (120, 3600), "read":
 
 def client_ip(req: Request):
     # the app listens on 127.0.0.1 only, so the tunnel's header is the real client address
-    return req.headers.get("cf-connecting-ip") or (req.client.host if req.client else "?")
+    ip = req.headers.get("cf-connecting-ip")
+    if not ip and os.environ.get("TIMLUL_TRUST_XFF"):      # behind a hosting proxy (e.g. Hugging Face Spaces)
+        ip = (req.headers.get("x-forwarded-for") or "").split(",")[0].strip()
+    return ip or (req.client.host if req.client else "?")
 
 
 def limit(req: Request, kind: str):
