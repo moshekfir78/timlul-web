@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>תמלול – תמלול שיעורי תורה</title>
+<meta name="description" content="תמלול מלא ומדויק של שיעורים והרצאות בעברית, עם פסוקים וציטוטים מוזחים לפי דף המקורות.">
+<meta name="theme-color" content="#fffaf3">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&family=Frank+Ruhl+Libre:wght@400;500;700&display=swap">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<a class="skip" href="#main">דלג לתוכן הראשי</a>
+<header class="top">
+  <a href="#/" class="brand" aria-label="תמלול – לדף הבית"><img src="icon.svg" alt="" width="34" height="34"><span>תמלול</span></a>
+  <nav aria-label="ראשי" class="topnav">
+    <a href="#/" id="navNew">תמלול חדש</a>
+    <a href="#/mine" id="navMine">התמלולים שלי</a>
+  </nav>
+</header>
+
+<div id="offline" class="banner" role="status" hidden></div>
+
+<main id="main" tabindex="-1">
+  <!-- ========== new transcription ========== -->
+  <section id="viewNew" aria-labelledby="hNew">
+    <div class="hero">
+      <h1 id="hNew" class="page">תמלול שיעורים, <span class="grad">מילה במילה</span></h1>
+      <p class="lead">מדביקים קישור או מעלים הקלטה, ומקבלים תמלול מלא בעברית: בלי מילות קישור וגמגומים, עם פסוקים וציטוטים מוזחים בנוסח המדויק.</p>
+    </div>
+
+    <form id="newForm" class="card form" novalidate>
+      <fieldset class="seg">
+        <legend>מאיפה השיעור?</legend>
+        <div class="segs">
+          <input type="radio" name="kind" id="kLink" value="link" checked><label for="kLink">קישור</label>
+          <input type="radio" name="kind" id="kFile" value="file"><label for="kFile">קובץ מהמכשיר</label>
+        </div>
+      </fieldset>
+
+      <div id="linkBox" class="field">
+        <label for="url">קישור לשיעור</label>
+        <input id="url" name="url" type="url" inputmode="url" dir="ltr" autocomplete="off" placeholder="https://www.youtube.com/watch?v=…" aria-describedby="urlHint urlErr">
+        <p id="urlHint" class="hint">יוטיוב, קול הלשון, קובץ MP3 ישיר ועוד. עד 3 שעות.</p>
+        <p id="urlErr" class="err" hidden></p>
+      </div>
+
+      <div id="fileBox" class="field" hidden>
+        <span class="lbl" id="fileLbl">קובץ שמע או וידאו</span>
+        <label class="drop" for="file">
+          <span class="drop-ic" aria-hidden="true">⬆</span>
+          <span id="fileName" class="drop-t">בחרו קובץ או גררו אותו לכאן</span>
+          <span class="hint">MP3, M4A, WAV, MP4 ועוד · עד 2GB · עד 3 שעות</span>
+        </label>
+        <input id="file" name="file" type="file" class="vh" accept="audio/*,video/*,.mp3,.m4a,.wav,.mp4,.webm,.ogg,.opus,.flac,.aac,.mkv,.mov,.amr,.3gp" aria-labelledby="fileLbl" aria-describedby="fileErr">
+        <p id="fileErr" class="err" hidden></p>
+      </div>
+
+      <div class="field">
+        <label for="title">שם השיעור <span class="opt">(לא חובה)</span></label>
+        <input id="title" name="title" type="text" maxlength="200" autocomplete="off" placeholder="למשל: פרשת נח – הרב כהן">
+      </div>
+
+      <details class="srcbox" id="srcDetails">
+        <summary><span>דף מקורות</span> <span class="opt">(לא חובה, משפר מאוד את הדיוק)</span></summary>
+        <p class="hint">כשיש דף מקורות, הפסוקים והציטוטים נכתבים בנוסח המדויק שלו, ושמות הספרים והרבנים מזוהים נכון.</p>
+        <div class="field">
+          <label for="srcFiles">קבצי מקורות</label>
+          <input id="srcFiles" name="sources" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.webp,.heic,.docx,.txt,.md" aria-describedby="srcHint srcErr">
+          <p id="srcHint" class="hint">PDF, תמונה או צילום של הדף, Word או טקסט. עד 25MB.</p>
+          <p id="srcErr" class="err" hidden></p>
+        </div>
+        <div class="field">
+          <label for="srcText">או הדביקו את טקסט המקורות</label>
+          <textarea id="srcText" name="sources_text" rows="5" placeholder="הדביקו כאן פסוקים, מקורות, שמות…"></textarea>
+        </div>
+      </details>
+
+      <p id="formErr" class="err big" role="alert" hidden></p>
+      <div id="upWrap" class="upwrap" hidden>
+        <label for="upProg" id="upLbl">מעלה את הקובץ…</label>
+        <progress id="upProg" max="100" value="0"></progress>
+      </div>
+      <button id="go" class="btn pri big" type="submit">התחילו תמלול</button>
+      <p class="hint center">הקבצים והתמלול נשמרים בשרת עד 14 יום, ונגישים רק דרך הקישור האישי שלכם.</p>
+    </form>
+
+    <section class="how" aria-labelledby="hHow">
+      <h2 id="hHow" class="sec">איך זה עובד</h2>
+      <ol class="steps">
+        <li><b>תמלול ראשוני</b><span>Gemini 3.5 מקשיב לכל ההקלטה ומתמלל אותה מילה במילה, בקטעים קצרים ובמקביל.</span></li>
+        <li><b>עריכה מול המקורות</b><span>מעבר שני מנקה מילות קישור וגמגומים, מתקן שמות ומונחים ומיישר פסוקים וציטוטים לנוסח המקור.</span></li>
+        <li><b>תמלול מוכן</b><span>ציטוטים מוזחים, חותמות זמן, נספח סיפורים ודף מקורות. אפשר לערוך, להעתיק ולהוריד.</span></li>
+      </ol>
+    </section>
+  </section>
+
+  <!-- ========== my transcriptions ========== -->
+  <section id="viewMine" aria-labelledby="hMine" hidden>
+    <h1 id="hMine" class="page">התמלולים שלי</h1>
+    <p class="hint">רק במכשיר ובדפדפן הזה. אף אחד אחר לא רואה את הרשימה.</p>
+    <ul id="mineList" class="list"></ul>
+    <p id="mineEmpty" class="empty" hidden>עוד אין תמלולים. <a href="#/">התחילו תמלול חדש</a></p>
+  </section>
+
+  <!-- ========== one job ========== -->
+  <section id="viewJob" aria-labelledby="jTitle" hidden>
+    <h1 id="jTitle" class="page"></h1>
+    <p id="jMeta" class="meta"></p>
+
+    <div id="statusCard" class="card status">
+      <ol class="stages" aria-label="שלבי התמלול">
+        <li id="st1">הכנת השמע</li><li id="st2">תמלול ראשוני</li><li id="st3">עריכה מול המקורות</li>
+      </ol>
+      <label for="jProg" class="vh">התקדמות</label>
+      <progress id="jProg" max="100" value="0"></progress>
+      <p id="jMsg" class="msg" role="status" aria-live="polite"></p>
+      <p id="jErr" class="err big" role="alert" hidden></p>
+      <div id="jErrActions" class="row" hidden>
+        <button id="retry2" class="btn" type="button">נסו שוב את שלב העריכה</button>
+        <a class="btn" href="#/">תמלול חדש</a>
+      </div>
+    </div>
+
+    <div id="resultBox" hidden>
+      <div class="toolbar" role="group" aria-label="פעולות על התמלול">
+        <div class="tabs" role="tablist" aria-label="תצוגה">
+          <button role="tab" id="tabFix" aria-controls="pFix" aria-selected="true" type="button">תמלול ערוך</button>
+          <button role="tab" id="tabRaw" aria-controls="pRaw" aria-selected="false" tabindex="-1" type="button">תמלול ראשוני</button>
+          <button role="tab" id="tabSrc" aria-controls="pSrc" aria-selected="false" tabindex="-1" type="button">מקורות</button>
+        </div>
+        <label class="switch"><input type="checkbox" id="showTs" checked> <span>חותמות זמן</span></label>
+      </div>
+
+      <div id="pFix" role="tabpanel" aria-labelledby="tabFix" tabindex="0">
+        <div class="row actions">
+          <button id="editBtn" class="btn" type="button">✎ עריכה</button>
+          <button id="copyBtn" class="btn" type="button">העתקה</button>
+          <a id="dlMd" class="btn" href="#" download>הורדה <bdi dir="ltr">.md</bdi></a>
+          <a id="dlTxt" class="btn" href="#" download>הורדה <bdi dir="ltr">.txt</bdi></a>
+          <button id="delBtn" class="btn danger" type="button">מחיקה</button>
+        </div>
+        <article id="fixText" class="text" aria-label="התמלול הערוך"></article>
+        <div id="editBox" hidden>
+          <label for="editArea">עריכת התמלול <span class="opt">(ציטוט: שורה שמתחילה ב־&gt;, הדגשה: **מילה**)</span></label>
+          <textarea id="editArea" class="editor" rows="20" dir="rtl"></textarea>
+          <div class="row"><button id="saveBtn" class="btn pri" type="button">שמירה</button><button id="cancelBtn" class="btn" type="button">ביטול</button></div>
+        </div>
+      </div>
+      <div id="pRaw" role="tabpanel" aria-labelledby="tabRaw" tabindex="0" hidden>
+        <p class="hint">הפלט הישיר של Gemini 3.5 לפני העריכה, בקטעים של כשתי דקות.</p>
+        <div class="row actions"><a id="dlRaw" class="btn" href="#" download>הורדת התמלול הראשוני</a></div>
+        <article id="rawText" class="text raw" aria-label="התמלול הראשוני"></article>
+      </div>
+      <div id="pSrc" role="tabpanel" aria-labelledby="tabSrc" tabindex="0" hidden>
+        <ul id="srcNotes" class="notes"></ul>
+        <article id="srcText2" class="text src" aria-label="טקסט המקורות"></article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<dialog id="confirmDlg" aria-labelledby="dlgT" aria-describedby="dlgD">
+  <h2 id="dlgT">למחוק את התמלול?</h2>
+  <p id="dlgD">ההקלטה והתמלול יימחקו מהשרת ולא יהיה אפשר לשחזר אותם.</p>
+  <form method="dialog" class="row"><button value="yes" class="btn danger">מחיקה</button><button value="no" class="btn" autofocus>ביטול</button></form>
+</dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<footer class="sitefoot">
+  <p>תמלול הוא חלק מהמשפחה של <a href="https://moshekfir78.github.io/shiurim-app/">אוהל משה – שיעורי תורה</a></p>
+  <p class="hint">התמלול נעשה באמצעות Gemini 3.5. מומלץ לבדוק ציטוטים מסומנים לפני פרסום.</p>
+</footer>
+<script src="app.js?v=1"></script>
+</body>
+</html>
