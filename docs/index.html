@@ -4,13 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>תמלול – תמלול שיעורי תורה</title>
-<meta name="description" content="תמלול מלא ומדויק של שיעורים והרצאות בעברית, עם פסוקים וציטוטים מוזחים לפי דף המקורות.">
+<meta name="description" content="תמלול מלא ומדויק של שיעורים והרצאות בעברית, עם פסוקים וציטוטים מוזחים לפי דף המקורות. הכול בדפדפן, עם מפתח Gemini חינמי.">
 <meta name="theme-color" content="#fffaf3">
+<meta name="referrer" content="no-referrer">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&family=Frank+Ruhl+Libre:wght@400;500;700&display=swap">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="style.css?v=1">
+<link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 <a class="skip" href="#main">דלג לתוכן הראשי</a>
@@ -19,44 +20,42 @@
   <nav aria-label="ראשי" class="topnav">
     <a href="#/" id="navNew">תמלול חדש</a>
     <a href="#/mine" id="navMine">התמלולים שלי</a>
+    <a href="#/key" id="navKey"><span id="keyDot" class="kdot" aria-hidden="true"></span><span>מפתח Gemini</span><span id="keyState" class="vh"></span></a>
   </nav>
 </header>
 
-<div id="offline" class="banner" role="status" hidden></div>
+<div id="runBanner" class="banner run" role="status" hidden>
+  <span>תמלול רץ ברקע: <a id="runLink" href="#/"></a></span>
+</div>
 
 <main id="main" tabindex="-1">
   <!-- ========== new transcription ========== -->
   <section id="viewNew" aria-labelledby="hNew">
     <div class="hero">
       <h1 id="hNew" class="page">תמלול שיעורים, <span class="grad">מילה במילה</span></h1>
-      <p class="lead">מדביקים קישור או מעלים הקלטה, ומקבלים תמלול מלא בעברית: בלי מילות קישור וגמגומים, עם פסוקים וציטוטים מוזחים בנוסח המדויק.</p>
+      <p class="lead">מעלים הקלטה ומקבלים תמלול מלא בעברית: בלי מילות מילוי וגמגומים, עם פסוקים וציטוטים מוזחים בנוסח המדויק.</p>
+    </div>
+
+    <div id="needKey" class="card keycall" hidden>
+      <div class="keycall-ic" aria-hidden="true">🔑</div>
+      <div>
+        <h2 class="sec0">צעד אחד לפני שמתחילים</h2>
+        <p>התמלול רץ ישירות בדפדפן שלכם בעזרת Gemini של Google. צריך פעם אחת מפתח Gemini אישי – הוא חינמי ולוקח כדקה להשיג אותו.</p>
+        <a class="btn pri" href="#/key">הגדרת מפתח Gemini</a>
+      </div>
     </div>
 
     <form id="newForm" class="card form" novalidate>
-      <fieldset class="seg">
-        <legend>מאיפה השיעור?</legend>
-        <div class="segs">
-          <input type="radio" name="kind" id="kLink" value="link" checked><label for="kLink">קישור</label>
-          <input type="radio" name="kind" id="kFile" value="file"><label for="kFile">קובץ מהמכשיר</label>
-        </div>
-      </fieldset>
-
-      <div id="linkBox" class="field">
-        <label for="url">קישור לשיעור</label>
-        <input id="url" name="url" type="url" inputmode="url" dir="ltr" autocomplete="off" placeholder="https://www.youtube.com/watch?v=…" aria-describedby="urlHint urlErr">
-        <p id="urlHint" class="hint">יוטיוב, קול הלשון, קובץ MP3 ישיר ועוד. עד 3 שעות.</p>
-        <p id="urlErr" class="err" hidden></p>
-      </div>
-
-      <div id="fileBox" class="field" hidden>
-        <span class="lbl" id="fileLbl">קובץ שמע או וידאו</span>
+      <div class="field">
+        <span class="lbl" id="fileLbl">קובץ השיעור</span>
+        <input id="file" name="file" type="file" class="vh" accept="audio/*,video/*,.mp3,.m4a,.wav,.mp4,.webm,.ogg,.oga,.opus,.flac,.aac,.mkv,.mov,.m4v,.3gp" aria-labelledby="fileLbl" aria-describedby="fileErr linkNote">
         <label class="drop" for="file">
           <span class="drop-ic" aria-hidden="true">⬆</span>
-          <span id="fileName" class="drop-t">בחרו קובץ או גררו אותו לכאן</span>
-          <span class="hint">MP3, M4A, WAV, MP4 ועוד · עד 2GB · עד 3 שעות</span>
+          <span id="fileName" class="drop-t">בחרו קובץ שמע או וידאו, או גררו אותו לכאן</span>
+          <span class="hint">MP3, M4A, WAV, OGG, MP4, WEBM ועוד · עד 3 שעות</span>
         </label>
-        <input id="file" name="file" type="file" class="vh" accept="audio/*,video/*,.mp3,.m4a,.wav,.mp4,.webm,.ogg,.opus,.flac,.aac,.mkv,.mov,.amr,.3gp" aria-labelledby="fileLbl" aria-describedby="fileErr">
         <p id="fileErr" class="err" hidden></p>
+        <p id="linkNote" class="note">🔗 קישורים (יוטיוב וכדומה) לא נתמכים בגרסה הזו – רק קבצים. אפשר להוריד את ההקלטה למכשיר ולהעלות אותה כאן.</p>
       </div>
 
       <div class="field">
@@ -79,29 +78,62 @@
         </div>
       </details>
 
-      <p id="formErr" class="err big" role="alert" hidden></p>
-      <div id="upWrap" class="upwrap" hidden>
-        <label for="upProg" id="upLbl">מעלה את הקובץ…</label>
-        <progress id="upProg" max="100" value="0"></progress>
-      </div>
+      <p id="formErr" class="err big" role="alert" tabindex="-1" hidden></p>
       <button id="go" class="btn pri big" type="submit">התחילו תמלול</button>
-      <p class="hint center">הקבצים והתמלול נשמרים בשרת עד 14 יום, ונגישים רק דרך הקישור האישי שלכם.</p>
+      <p class="hint center">🔒 הכול קורה בדפדפן שלכם. ההקלטה נשלחת רק ל-Gemini של Google לתמלול, ולא נשמרת בשום שרת שלנו. התמלולים נשמרים רק במכשיר הזה.</p>
     </form>
 
     <section class="how" aria-labelledby="hHow">
       <h2 id="hHow" class="sec">איך זה עובד</h2>
       <ol class="steps">
-        <li><b>תמלול ראשוני</b><span>Gemini 3.5 מקשיב לכל ההקלטה ומתמלל אותה מילה במילה, בקטעים קצרים ובמקביל.</span></li>
-        <li><b>עריכה מול המקורות</b><span>מעבר שני מנקה מילות קישור וגמגומים, מתקן שמות ומונחים ומיישר פסוקים וציטוטים לנוסח המקור.</span></li>
-        <li><b>תמלול מוכן</b><span>ציטוטים מוזחים, חותמות זמן, נספח סיפורים ודף מקורות. אפשר לערוך, להעתיק ולהוריד.</span></li>
+        <li><b>תמלול ראשוני</b><span>Gemini 3.5 מקשיב לכל ההקלטה ומתמלל אותה מילה במילה, בקטעים של כשתי דקות ובמקביל.</span></li>
+        <li><b>עריכה מול המקורות</b><span>מעבר שני מסיר מילות מילוי וגמגומים בלבד, מתקן שמות ומונחים ומיישר פסוקים וציטוטים לנוסח המקור.</span></li>
+        <li><b>תמלול מוכן</b><span>ציטוטים מוזחים עם מראה מקום, חותמות זמן, נספח סיפורים ודף מקורות. אפשר לערוך, להעתיק ולהוריד.</span></li>
       </ol>
     </section>
+  </section>
+
+  <!-- ========== Gemini key ========== -->
+  <section id="viewKey" aria-labelledby="hKey" hidden>
+    <h1 id="hKey" class="page">מפתח Gemini</h1>
+    <p class="lead0">האתר לא מפעיל שרת משלו: התמלול נעשה ישירות מהדפדפן שלכם מול Gemini של Google, עם מפתח אישי שלכם. המפתח חינמי.</p>
+
+    <div class="card">
+      <h2 class="sec0">איך משיגים מפתח (פעם אחת, כדקה)</h2>
+      <ol class="howto">
+        <li>היכנסו ל-<a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">Google AI Studio – דף המפתחות<span class="vh"> (נפתח בלשונית חדשה)</span></a> עם חשבון Google רגיל.</li>
+        <li>לחצו על <b dir="ltr">Create API key</b> (יצירת מפתח). אם תתבקשו, בחרו או צרו פרויקט.</li>
+        <li>העתיקו את המפתח (מתחיל בדרך כלל ב-<bdi dir="ltr">AIza</bdi>) והדביקו אותו כאן למטה.</li>
+      </ol>
+      <h3 class="sub">כמה אפשר לתמלל בחינם?</h3>
+      <ul class="facts">
+        <li>במסלול החינמי של Google יש מכסה יומית: בערך 2–3 שעות הקלטה ביום. המכסה מתאפסת כל יום בסביבות 10:00 בבוקר (שעון ישראל).</li>
+        <li>כשהמכסה של מודל התמלול נגמרת, האתר עובר אוטומטית למודלים אחרים של Gemini, ואם גם הם מוגבלים – תופיע הודעה לנסות שוב מחר.</li>
+        <li>במסלול החינמי Google רשאית להשתמש בתוכן שנשלח לשיפור המוצרים שלה. אם זה חשוב לכם, אפשר להפעיל חיוב ב-Google AI Studio (משלמים לפי שימוש, סנטים בודדים לשיעור), ואז גם המכסות גבוהות בהרבה.</li>
+      </ul>
+    </div>
+
+    <form id="keyForm" class="card form" novalidate>
+      <div class="field">
+        <label for="keyInput">המפתח שלכם</label>
+        <div class="keyrow">
+          <input id="keyInput" type="password" dir="ltr" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="AIza…" aria-describedby="keyHint keyMsg">
+          <button id="keyShow" class="btn" type="button" aria-pressed="false" aria-controls="keyInput">הצגה</button>
+        </div>
+        <p id="keyHint" class="hint">🔒 המפתח נשמר רק בדפדפן הזה (localStorage), ונשלח רק לשרתי Google (generativelanguage.googleapis.com). הוא לא נשלח אלינו ולא לאף אחד אחר.</p>
+        <p id="keyMsg" class="msg2" role="status" aria-live="polite"></p>
+      </div>
+      <div class="row">
+        <button id="keySave" class="btn pri" type="submit">שמירה ובדיקה</button>
+        <button id="keyDel" class="btn danger" type="button">מחיקת המפתח מהמכשיר</button>
+      </div>
+    </form>
   </section>
 
   <!-- ========== my transcriptions ========== -->
   <section id="viewMine" aria-labelledby="hMine" hidden>
     <h1 id="hMine" class="page">התמלולים שלי</h1>
-    <p class="hint">רק במכשיר ובדפדפן הזה. אף אחד אחר לא רואה את הרשימה.</p>
+    <p class="hint">נשמרים רק במכשיר ובדפדפן הזה. אף אחד אחר לא רואה את הרשימה.</p>
     <ul id="mineList" class="list"></ul>
     <p id="mineEmpty" class="empty" hidden>עוד אין תמלולים. <a href="#/">התחילו תמלול חדש</a></p>
   </section>
@@ -115,18 +147,23 @@
       <ol class="stages" aria-label="שלבי התמלול">
         <li id="st1">הכנת השמע</li><li id="st2">תמלול ראשוני</li><li id="st3">עריכה מול המקורות</li>
       </ol>
-      <label for="jProg" class="vh">התקדמות</label>
-      <progress id="jProg" max="100" value="0"></progress>
+      <div class="progrow">
+        <progress id="jProg" max="100" value="0" aria-label="התקדמות התמלול"></progress>
+        <span id="jPct" class="pct" aria-hidden="true">0%</span>
+      </div>
       <p id="jMsg" class="msg" role="status" aria-live="polite"></p>
+      <p id="jSub" class="hint"></p>
+      <p id="jKeep" class="note" hidden>השאירו את הלשונית הזו פתוחה עד הסוף (אפשר לעבור ללשונית אחרת). במחשב נייד – חברו לחשמל.</p>
       <p id="jErr" class="err big" role="alert" hidden></p>
-      <div id="jErrActions" class="row" hidden>
-        <button id="retry2" class="btn" type="button">נסו שוב את שלב העריכה</button>
-        <a class="btn" href="#/">תמלול חדש</a>
+      <div class="row">
+        <button id="cancelJob" class="btn danger" type="button" hidden>ביטול התמלול</button>
+        <button id="retry2" class="btn pri" type="button" hidden>נסו שוב את שלב העריכה</button>
+        <a id="newAfter" class="btn" href="#/" hidden>תמלול חדש</a>
       </div>
     </div>
 
     <div id="resultBox" hidden>
-      <div class="toolbar" role="group" aria-label="פעולות על התמלול">
+      <div class="toolbar">
         <div class="tabs" role="tablist" aria-label="תצוגה">
           <button role="tab" id="tabFix" aria-controls="pFix" aria-selected="true" type="button">תמלול ערוך</button>
           <button role="tab" id="tabRaw" aria-controls="pRaw" aria-selected="false" tabindex="-1" type="button">תמלול ראשוני</button>
@@ -136,11 +173,12 @@
       </div>
 
       <div id="pFix" role="tabpanel" aria-labelledby="tabFix" tabindex="0">
-        <div class="row actions">
+        <div class="row actions" role="group" aria-label="פעולות על התמלול הערוך">
           <button id="editBtn" class="btn" type="button">✎ עריכה</button>
           <button id="copyBtn" class="btn" type="button">העתקה</button>
-          <a id="dlMd" class="btn" href="#" download>הורדה <bdi dir="ltr">.md</bdi></a>
-          <a id="dlTxt" class="btn" href="#" download>הורדה <bdi dir="ltr">.txt</bdi></a>
+          <button id="dlDocx" class="btn" type="button">הורדה <bdi dir="ltr">Word</bdi></button>
+          <button id="dlMd" class="btn" type="button">הורדה <bdi dir="ltr">.md</bdi></button>
+          <button id="dlTxt" class="btn" type="button">הורדה <bdi dir="ltr">.txt</bdi></button>
           <button id="delBtn" class="btn danger" type="button">מחיקה</button>
         </div>
         <article id="fixText" class="text" aria-label="התמלול הערוך"></article>
@@ -151,8 +189,11 @@
         </div>
       </div>
       <div id="pRaw" role="tabpanel" aria-labelledby="tabRaw" tabindex="0" hidden>
-        <p class="hint">הפלט הישיר של Gemini 3.5 לפני העריכה, בקטעים של כשתי דקות.</p>
-        <div class="row actions"><a id="dlRaw" class="btn" href="#" download>הורדת התמלול הראשוני</a></div>
+        <p class="hint">הפלט הישיר של Gemini לפני העריכה, בקטעים של כשתי דקות.</p>
+        <div class="row actions" role="group" aria-label="פעולות על התמלול הראשוני">
+          <button id="copyRaw" class="btn" type="button">העתקה</button>
+          <button id="dlRaw" class="btn" type="button">הורדת התמלול הראשוני <bdi dir="ltr">.txt</bdi></button>
+        </div>
         <article id="rawText" class="text raw" aria-label="התמלול הראשוני"></article>
       </div>
       <div id="pSrc" role="tabpanel" aria-labelledby="tabSrc" tabindex="0" hidden>
@@ -164,16 +205,16 @@
 </main>
 
 <dialog id="confirmDlg" aria-labelledby="dlgT" aria-describedby="dlgD">
-  <h2 id="dlgT">למחוק את התמלול?</h2>
-  <p id="dlgD">ההקלטה והתמלול יימחקו מהשרת ולא יהיה אפשר לשחזר אותם.</p>
+  <h2 id="dlgT">למחוק?</h2>
+  <p id="dlgD"></p>
   <form method="dialog" class="row"><button value="yes" class="btn danger">מחיקה</button><button value="no" class="btn" autofocus>ביטול</button></form>
 </dialog>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <footer class="sitefoot">
   <p>תמלול הוא חלק מהמשפחה של <a href="https://moshekfir78.github.io/shiurim-app/">אוהל משה – שיעורי תורה</a></p>
-  <p class="hint">התמלול נעשה באמצעות Gemini 3.5. מומלץ לבדוק ציטוטים מסומנים לפני פרסום.</p>
+  <p class="hint">התמלול נעשה באמצעות Gemini 3.5 של Google, ישירות מהדפדפן. מומלץ לבדוק ציטוטים מסומנים לפני פרסום.</p>
 </footer>
-<script src="app.js?v=1"></script>
+<script type="module" src="js/app.js?v=2"></script>
 </body>
 </html>
