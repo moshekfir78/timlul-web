@@ -139,7 +139,7 @@ async function slot(m, signal) {
  * parts: Gemini parts. textParts: extra text parts sent to non-transcribe models only.
  */
 export async function generate(key, { parts, textParts = [], pref, maxTokens = 65536, thinking = "low", tries = 3,
-  timeoutMs = 600000, signal, log = () => {}, onWait } = {}) {
+  timeoutMs = 600000, signal, log = () => {}, onWait, accept } = {}) {
   const errs = []; let last = null;
   const models = await cascade(key, pref, signal);
   const live = models.filter((m) => (cool.get(m) || 0) < Date.now());
@@ -159,6 +159,7 @@ export async function generate(key, { parts, textParts = [], pref, maxTokens = 6
         const j = await req(key, "POST", `/models/${m}:generateContent`, body, { signal, timeoutMs });
         const c = (j.candidates || [])[0];
         const out = textOf(c);
+        if (out.trim() && accept && !accept(out)) { errs.push(`${m}:פלט פגום`); log(`${m}: פלט פגום – עובר למודל הבא`); break; }
         if (out.trim()) { if (errs.length) log("מעברים: " + errs.join(", ")); return { text: out, model: m }; }
         errs.push(`${m}:ריק(${c?.finishReason || j.promptFeedback?.blockReason || "?"})`);
         break;

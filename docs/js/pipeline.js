@@ -7,6 +7,20 @@ import { chunkFile, PIECE } from "./audio.js";
 import { extractFile } from "./sources.js";
 
 export const PIECE_PAR = 5;
+/** Reject degenerate transcriptions (e.g. "b b b b …", one word looping, almost no Hebrew). */
+export function plausible(text, secs) {
+  const t = text.replace(/\s+/g, " ").trim();
+  if (!t) return false;
+  const words = t.split(" ");
+  let run = 1, maxRun = 1;
+  for (let i = 1; i < words.length; i++) { run = words[i] === words[i - 1] ? run + 1 : 1; if (run > maxRun) maxRun = run; }
+  if (maxRun >= 12) return false;
+  if (words.length > 60 && new Set(words).size / words.length < 0.12) return false;
+  const heb = (t.match(/[\u05d0-\u05ea]/g) || []).length, lat = (t.match(/[A-Za-z]/g) || []).length;
+  if (t.length > 120 && heb < lat) return false;
+  if (secs > 60 && heb < secs * 0.25 && !/^\(?[^)]*\)?$/.test(t)) return false;   // far too little text for the audio length
+  return true;
+}
 const INLINE_MAX = 10 * 1024 * 1024;   // bigger pieces go through the Files API (inline requests are capped at 20MB)
 /** Piece length: ~2 minutes for short recordings; for long ones aim at ~8 calls, because the free tier
     allows only a few dozen transcription calls a day (and 3 a minute). */
@@ -109,7 +123,7 @@ export async function stage1(key, job, file, { signal, update, log }) {
       p.blob = null;
       for (let round = 0; round < 2 && !r; round++) {
         try {
-          r = await generate(key, { parts, textParts: [{ text: rawPrompt }], pref: TRANSCRIBE_PREF,
+          r = await generate(key, { parts, textParts: [{ text: rawPrompt }], pref: TRANSCRIBE_PREF, accept: (t) => plausible(t, p.end - p.start),
             maxTokens: 32768, tries: 4, timeoutMs: 600000, signal: sig, log: (m) => log(`קטע ${i + 1}: ${m}`) });
         } catch (e) {
           if (isAbort(e) || isKeyError(e)) throw e;
@@ -159,6 +173,7 @@ export async function stage2(key, job, { signal, update, log }) {
   if (!segs.length) throw new Error("התמלול הראשוני ריק – אין מה לערוך");
   let base = fill(CORRECT, job.sources);
   if (job.title) base += `\nכותרת השיעור: ${job.title}\n`;
+  base += "\nתזכורת חשובה: החזר רק את מה שמופיע בתמלול הגולמי, מתוקן. דף המקורות משמש רק לתיקון נוסח של מה שנאמר – אסור להוסיף ממנו ציטוטים, פסוקים או קטעים שלא מופיעים בתמלול. קטע שסומן כלא מתומלל או שהוא שאריות זבל – השמט בלי להשלים.\n";
   const chunks = [];
   for (const s of job.raw) {
     const off = Math.floor(s.start / CHUNK);
